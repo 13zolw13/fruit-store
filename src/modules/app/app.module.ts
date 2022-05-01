@@ -2,9 +2,9 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
+import { ProductsModule } from '../products/products.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ProductsModule } from './modules/products/products.module';
 
 @Module({
   imports: [
