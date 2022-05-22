@@ -24,8 +24,10 @@ export class ProductsService {
     return await this.productModel.findById(id);
   }
 
-  update(id: string, updateProductInput: UpdateProductInput) {
-    return `This action updates a #${id} product`;
+  async update(updateProductInput: UpdateProductInput) {
+    return await this.productModel.findByIdAndUpdate(updateProductInput.id, {
+      ...updateProductInput,
+    });
   }
 
   async remove(id: string) {
