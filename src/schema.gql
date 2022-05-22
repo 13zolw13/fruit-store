@@ -50,7 +50,7 @@ type Query {
 }
 
 input UpdateProductInput {
-  id: Int!
+  id: String!
 
   """Example field (placeholder)"""
   name: String

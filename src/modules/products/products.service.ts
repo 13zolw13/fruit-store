@@ -24,7 +24,7 @@ export class ProductsService {
     return await this.productModel.findById(id);
   }
 
-  update(id: number, updateProductInput: UpdateProductInput) {
+  update(id: string, updateProductInput: UpdateProductInput) {
     return `This action updates a #${id} product`;
   }
 
