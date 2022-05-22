@@ -21,7 +21,7 @@ input CreateProductInput {
 
 type Mutation {
   createProduct(createProductInput: CreateProductInput!): Product!
-  removeProduct(id: Int!): Product!
+  removeProduct(id: String!): Product!
   updateProduct(updateProductInput: UpdateProductInput!): Product!
 }
 
