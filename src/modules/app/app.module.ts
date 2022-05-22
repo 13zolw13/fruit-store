@@ -13,8 +13,8 @@ import { AppService } from './app.service';
     ConfigMod,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      debug: true,
-      playground: false,
+      debug: false,
+      playground: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
     }),
