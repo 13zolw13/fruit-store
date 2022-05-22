@@ -26,6 +26,8 @@ type Mutation {
 }
 
 type Product {
+  id: ID!
+
   """Example field (placeholder)"""
   name: String!
 
@@ -43,7 +45,7 @@ type Product {
 }
 
 type Query {
-  product(id: Int!): Product!
+  OneProduct(id: String!): Product!
   products: [Product!]!
 }
 

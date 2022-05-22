@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type ProductDocument = Product & Document;
@@ -6,6 +6,9 @@ export type ProductDocument = Product & Document;
 @ObjectType()
 @Schema()
 export class Product {
+  @Field(() => ID)
+  id: string;
+
   @Field(() => String, { description: 'Example field (placeholder)' })
   @Prop()
   name: string;
