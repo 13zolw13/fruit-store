@@ -17,7 +17,7 @@ export class ProductsService {
   }
 
   async findAll() {
-    return `This action returns all products`;
+    return await this.productModel.find({});
   }
 
   findOne(id: number) {
