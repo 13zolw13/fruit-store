@@ -20,8 +20,8 @@ export class ProductsResolver {
     return this.productsService.findAll();
   }
 
-  @Query(() => Product, { name: 'product' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => Product, { name: 'OneProduct' })
+  findOne(@Args('id', { type: () => String }) id: string) {
     return this.productsService.findOne(id);
   }
 

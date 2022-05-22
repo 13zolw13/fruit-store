@@ -20,8 +20,8 @@ export class ProductsService {
     return await this.productModel.find({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async findOne(id: string) {
+    return await this.productModel.findById(id);
   }
 
   update(id: number, updateProductInput: UpdateProductInput) {
