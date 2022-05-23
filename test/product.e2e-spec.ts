@@ -52,8 +52,75 @@ describe('AppController (e2e)', () => {
         .expect((res) => {
           expect(res.body.data.products).toBeDefined();
           expect(res.body.data.products[0].name).toBe('bob');
-          expect(res.body.data.products).toMatchSnapshot();
+          //   expect(res.body.data.products).toMatchSnapshot();
         });
+    });
+  });
+
+  describe('Find one product by id', () => {
+    it('should return one product', async () => {
+      let id: string;
+      await request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `mutation{
+  	createProduct(createProductInput:{
+      name:"bob"
+    }){
+    name
+    id
+  }
+}`,
+        })
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.data.createProduct.name).toBe('bob');
+          expect(res.body.data.createProduct.id).toBeDefined();
+          id = res.body.data.createProduct.id;
+        });
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `{
+ OneProduct(id:"${id}"){  name}}`,
+        })
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.data).toBeDefined();
+        });
+    });
+  });
+
+  describe('Update product', () => {
+    it('should  update product details', async () => {
+      let id: string;
+      await request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `mutation{
+  	createProduct(createProductInput:{
+      name:"bob"
+    }){
+    name
+    id
+  }
+}`,
+        })
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.data.createProduct.name).toBe('bob');
+          expect(res.body.data.createProduct.id).toBeDefined();
+          id = res.body.data.createProduct.id;
+        });
+
+      const response = await request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `mutation{
+  	updateProduct(updateProductInput:{ id:"${id}" name:"banana" supplier:"kazistan"})
+      { name id supplier} }`,
+        });
+      expect(response.body.data.updateProduct.name).toBe('banana');
     });
   });
 });
