@@ -38,6 +38,10 @@ describe('ProductsResolver', () => {
               price: 1,
               quantity: 1,
             })),
+            update: jest.fn((product: Product) => ({
+              id: product.id,
+              ...product,
+            })),
           }),
         },
       ],
@@ -74,6 +78,23 @@ describe('ProductsResolver', () => {
     it('should return one product', async () => {
       const product = await resolver.findOne('1');
       expect(product).toEqual(mockProduct);
+    });
+  });
+
+  describe('updateProduct', () => {
+    it('should update product', async () => {
+      const product = await resolver.updateProduct({
+        id: '1',
+        name: 'product2',
+        price: 1,
+        quantity: 1,
+      });
+      expect(product).toEqual({
+        id: '1',
+        name: 'product2',
+        price: 1,
+        quantity: 1,
+      });
     });
   });
 });
