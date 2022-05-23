@@ -40,4 +40,20 @@ describe('AppController (e2e)', () => {
         });
     });
   });
+
+  describe('Find all products', () => {
+    it('should return list of products', async () => {
+      return request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `query{ products{ name, price}}`,
+        })
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.data.products).toBeDefined();
+          expect(res.body.data.products[0].name).toBe('bob');
+          expect(res.body.data.products).toMatchSnapshot();
+        });
+    });
+  });
 });
