@@ -123,4 +123,39 @@ describe('AppController (e2e)', () => {
       expect(response.body.data.updateProduct.name).toBe('banana');
     });
   });
+
+  describe('Remove product', () => {
+    it('should  remove product', async () => {
+      let id: string;
+      await request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `mutation{
+  	createProduct(createProductInput:{
+      name:"bob"
+    }){
+    name
+    id
+  }
+}`,
+        })
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.data.createProduct.name).toBe('bob');
+          expect(res.body.data.createProduct.id).toBeDefined();
+          id = res.body.data.createProduct.id;
+        });
+
+      const response = await request(app.getHttpServer())
+        .post(gql)
+        .send({
+          query: `mutation{
+  removeProduct(id:"${id}"){
+    id
+  }
+}`,
+        });
+      expect(response.statusCode).toBe(200);
+    });
+  });
 });
