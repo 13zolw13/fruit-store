@@ -25,9 +25,13 @@ export class ProductsService {
   }
 
   async update(updateProductInput: UpdateProductInput) {
-    return await this.productModel.findByIdAndUpdate(updateProductInput.id, {
-      ...updateProductInput,
-    });
+    return await this.productModel.findByIdAndUpdate(
+      updateProductInput.id,
+      {
+        ...updateProductInput,
+      },
+      { new: true },
+    );
   }
 
   async remove(id: string) {
