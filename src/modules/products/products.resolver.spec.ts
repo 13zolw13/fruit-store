@@ -50,7 +50,6 @@ describe('ProductsResolver', () => {
     expect(resolver).toBeDefined();
   });
 
-
   describe('createProduct', () => {
     it('should create a product', () => {
       const product = {
@@ -61,6 +60,13 @@ describe('ProductsResolver', () => {
       };
 
       expect(resolver.createProduct(product)).toEqual(product);
+    });
+  });
+
+  describe('findAll', () => {
+    it('should return an array of products', async () => {
+      const products = await resolver.findAll();
+      expect(products).toEqual([mockProduct, mockProduct2]);
     });
   });
 });
