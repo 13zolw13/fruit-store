@@ -42,6 +42,9 @@ describe('ProductsResolver', () => {
               id: product.id,
               ...product,
             })),
+            remove: jest.fn((id: string) => ({
+              id: id,
+            })),
           }),
         },
       ],
@@ -95,6 +98,12 @@ describe('ProductsResolver', () => {
         price: 1,
         quantity: 1,
       });
+    });
+  });
+  describe('removeProduct', () => {
+    it('should delete product ', async () => {
+      const product = await resolver.removeProduct('1');
+      expect(product.id).toEqual(mockProduct.id);
     });
   });
 });
