@@ -69,4 +69,11 @@ describe('ProductsResolver', () => {
       expect(products).toEqual([mockProduct, mockProduct2]);
     });
   });
+
+  describe('findOne', () => {
+    it('should return one product', async () => {
+      const product = await resolver.findOne('1');
+      expect(product).toEqual(mockProduct);
+    });
+  });
 });
