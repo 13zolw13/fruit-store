@@ -101,7 +101,7 @@ describe('ProductsResolver', () => {
     });
   });
   describe('removeProduct', () => {
-    it('should delete product ', async () => {
+    it('should delete product', async () => {
       const product = await resolver.removeProduct('1');
       expect(product.id).toEqual(mockProduct.id);
     });
