@@ -49,4 +49,18 @@ describe('ProductsResolver', () => {
   it('should be defined', () => {
     expect(resolver).toBeDefined();
   });
+
+
+  describe('createProduct', () => {
+    it('should create a product', () => {
+      const product = {
+        id: '1',
+        name: 'Product 1',
+        price: 1,
+        quantity: 1,
+      };
+
+      expect(resolver.createProduct(product)).toEqual(product);
+    });
+  });
 });
