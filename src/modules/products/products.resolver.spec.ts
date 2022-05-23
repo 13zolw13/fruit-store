@@ -1,13 +1,46 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { Product } from './entities/product.entity';
 import { ProductsResolver } from './products.resolver';
 import { ProductsService } from './products.service';
+
+const mockProduct = {
+  id: '1',
+  name: 'Product 1',
+  price: 1,
+  quantity: 1,
+};
+
+const mockProduct2 = {
+  id: '1234',
+  name: 'Product 1123',
+  price: 2,
+  quantity: 3,
+};
 
 describe('ProductsResolver', () => {
   let resolver: ProductsResolver;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ProductsResolver, ProductsService],
+      providers: [
+        ProductsResolver,
+        {
+          provide: ProductsService,
+          useFactory: () => ({
+            create: jest.fn((product: Product) => ({
+              id: product.id,
+              ...product,
+            })),
+            findAll: jest.fn(() => [mockProduct, mockProduct2]),
+            findOne: jest.fn((id: string) => ({
+              id: id,
+              name: 'Product 1',
+              price: 1,
+              quantity: 1,
+            })),
+          }),
+        },
+      ],
     }).compile();
 
     resolver = module.get<ProductsResolver>(ProductsResolver);
