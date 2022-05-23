@@ -17,6 +17,12 @@ const mockProduct2 = {
   quantity: 3,
 };
 
+const updatedMockProduct = {
+  id: '1',
+  name: 'product2',
+  price: 1,
+  quantity: 1,
+};
 describe('ProductsResolver', () => {
   let resolver: ProductsResolver;
 
@@ -28,7 +34,7 @@ describe('ProductsResolver', () => {
           provide: ProductsService,
           useFactory: () => ({
             create: jest.fn((product: Product) => ({
-              id: product.id,
+              id: '1',
               ...product,
             })),
             findAll: jest.fn(() => [mockProduct, mockProduct2]),
@@ -60,13 +66,12 @@ describe('ProductsResolver', () => {
   describe('createProduct', () => {
     it('should create a product', () => {
       const product = {
-        id: '1',
         name: 'Product 1',
         price: 1,
         quantity: 1,
       };
 
-      expect(resolver.createProduct(product)).toEqual(product);
+      expect(resolver.createProduct(product)).toEqual(mockProduct);
     });
   });
 
@@ -92,12 +97,7 @@ describe('ProductsResolver', () => {
         price: 1,
         quantity: 1,
       });
-      expect(product).toEqual({
-        id: '1',
-        name: 'product2',
-        price: 1,
-        quantity: 1,
-      });
+      expect(product).toEqual(updatedMockProduct);
     });
   });
   describe('removeProduct', () => {
