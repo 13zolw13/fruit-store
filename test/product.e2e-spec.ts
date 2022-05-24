@@ -2,6 +2,13 @@ import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import mongoose from 'mongoose';
 import { AppModule } from '../src/modules/app/app.module';
+import {
+  createNewProductQueryString,
+  findProductByIdQueryString,
+  findProductQueryString,
+  removeProductQueryString,
+  updateProductQueryString,
+} from './QueryStrings';
 import request = require('supertest');
 
 describe('AppController (e2e)', () => {
@@ -45,7 +52,6 @@ describe('AppController (e2e)', () => {
 
   describe('Find all products', () => {
     it('should return list of products', async () => {
-      const findProductQueryString = `query{ products{ name, price}}`;
       return request(app.getHttpServer())
         .post(gql)
         .send({
@@ -135,24 +141,3 @@ describe('AppController (e2e)', () => {
     });
   });
 });
-function createNewProductQueryString(name: string) {
-  return `mutation{	createProduct(createProductInput:{ name:"${name}"}){  name id }}`;
-}
-function removeProductQueryString(id: string) {
-  return `mutation{
-  removeProduct(id:"${id}"){
-    id
-  }
-}`;
-}
-
-function updateProductQueryString(id: string) {
-  return `mutation{
-  	updateProduct(updateProductInput:{ id:"${id}" name:"banana" supplier:"kazistan"})
-      { name id supplier} }`;
-}
-
-function findProductByIdQueryString(id: string) {
-  return `{
- OneProduct(id:"${id}"){  name}}`;
-}
