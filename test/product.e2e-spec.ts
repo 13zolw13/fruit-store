@@ -119,14 +119,7 @@ describe('AppController (e2e)', () => {
       await request(app.getHttpServer())
         .post(gql)
         .send({
-          query: `mutation{
-  	createProduct(createProductInput:{
-      name:"bob"
-    }){
-    name
-    id
-  }
-}`,
+          query: createNewProductQueryString('bob'),
         })
         .expect(200)
         .expect((res) => {
@@ -138,16 +131,25 @@ describe('AppController (e2e)', () => {
       const response = await request(app.getHttpServer())
         .post(gql)
         .send({
-          query: `mutation{
-  removeProduct(id:"${id}"){
-    id
-  }
-}`,
+          query: removeProductQueryString(id),
         });
       expect(response.statusCode).toBe(200);
+
+      function createNewProductQueryString(name: string) {
+        return `mutation{	createProduct(createProductInput:{ name:"${name}"}){  name id }}`;
+      }
     });
   });
 });
+
+function removeProductQueryString(id: string) {
+  return `mutation{
+  removeProduct(id:"${id}"){
+    id
+  }
+}`;
+}
+
 function updateProductQueryString(id: string) {
   return `mutation{
   	updateProduct(updateProductInput:{ id:"${id}" name:"banana" supplier:"kazistan"})
