@@ -1,13 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { configDatabase } from './configDatabase';
 
 @Module({
-  imports: [
-    MongooseModule.forRoot(
-      process.env.NODE_ENV !== 'TEST'
-        ? process.env.DATABASE_URL
-        : process.env.DATABASE_TEST_URL,
-    ),
-  ],
+  imports: [MongooseModule.forRoot(configDatabase)],
 })
 export class DatabaseModule {}
