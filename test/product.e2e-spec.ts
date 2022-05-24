@@ -30,17 +30,11 @@ describe('AppController (e2e)', () => {
 
   describe('Create Product', () => {
     it('should return created product', async () => {
+      const createProductQueryString = `mutation{ createProduct(createProductInput:{ name:"bob" }){ name id }}`;
       return request(app.getHttpServer())
         .post(gql)
         .send({
-          query: `mutation{
-  	createProduct(createProductInput:{
-      name:"bob"
-    }){
-    name
-    id
-  }
-}`,
+          query: createProductQueryString,
         })
         .expect(200)
         .expect((res) => {
@@ -52,16 +46,16 @@ describe('AppController (e2e)', () => {
 
   describe('Find all products', () => {
     it('should return list of products', async () => {
+      const findProductQueryString = `query{ products{ name, price}}`;
       return request(app.getHttpServer())
         .post(gql)
         .send({
-          query: `query{ products{ name, price}}`,
+          query: findProductQueryString,
         })
         .expect(200)
         .expect((res) => {
           expect(res.body.data.products).toBeDefined();
           expect(res.body.data.products[0].name).toBe('bob');
-          //   expect(res.body.data.products).toMatchSnapshot();
         });
     });
   });
@@ -69,17 +63,11 @@ describe('AppController (e2e)', () => {
   describe('Find one product by id', () => {
     it('should return one product', async () => {
       let id: string;
+      const createProductQueryString = `mutation{ createProduct(createProductInput:{ name:"bob" }){ name id}}`;
       await request(app.getHttpServer())
         .post(gql)
         .send({
-          query: `mutation{
-  	createProduct(createProductInput:{
-      name:"bob"
-    }){
-    name
-    id
-  }
-}`,
+          query: createProductQueryString,
         })
         .expect(200)
         .expect((res) => {
@@ -90,8 +78,7 @@ describe('AppController (e2e)', () => {
       return request(app.getHttpServer())
         .post(gql)
         .send({
-          query: `{
- OneProduct(id:"${id}"){  name}}`,
+          query: findProductByIdQueryString(id),
         })
         .expect(200)
         .expect((res) => {
@@ -103,17 +90,12 @@ describe('AppController (e2e)', () => {
   describe('Update product', () => {
     it('should  update product details', async () => {
       let id: string;
+      const createProductQueryString = `mutation{ createProduct(createProductInput:{ name:"bob" }){ name id}}`;
+
       await request(app.getHttpServer())
         .post(gql)
         .send({
-          query: `mutation{
-  	createProduct(createProductInput:{
-      name:"bob"
-    }){
-    name
-    id
-  }
-}`,
+          query: createProductQueryString,
         })
         .expect(200)
         .expect((res) => {
@@ -125,9 +107,7 @@ describe('AppController (e2e)', () => {
       const response = await request(app.getHttpServer())
         .post(gql)
         .send({
-          query: `mutation{
-  	updateProduct(updateProductInput:{ id:"${id}" name:"banana" supplier:"kazistan"})
-      { name id supplier} }`,
+          query: updateProductQueryString(id),
         });
       expect(response.body.data.updateProduct.name).toBe('banana');
     });
@@ -168,3 +148,13 @@ describe('AppController (e2e)', () => {
     });
   });
 });
+function updateProductQueryString(id: string) {
+  return `mutation{
+  	updateProduct(updateProductInput:{ id:"${id}" name:"banana" supplier:"kazistan"})
+      { name id supplier} }`;
+}
+
+function findProductByIdQueryString(id: string) {
+  return `{
+ OneProduct(id:"${id}"){  name}}`;
+}
