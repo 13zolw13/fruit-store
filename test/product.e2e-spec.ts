@@ -1,11 +1,16 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import mongoose from 'mongoose';
 import { AppModule } from '../src/modules/app/app.module';
 import request = require('supertest');
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
   const gql = '/graphql';
+
+  beforeAll(async () => {
+    mongoose.connection.dropDatabase();
+  });
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -17,6 +22,10 @@ describe('AppController (e2e)', () => {
 
   afterAll(async () => {
     await app.close();
+  });
+
+  afterEach(() => {
+    mongoose.connection.dropDatabase();
   });
 
   describe('Create Product', () => {
