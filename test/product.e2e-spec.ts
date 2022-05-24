@@ -30,11 +30,10 @@ describe('AppController (e2e)', () => {
 
   describe('Create Product', () => {
     it('should return created product', async () => {
-      const createProductQueryString = `mutation{ createProduct(createProductInput:{ name:"bob" }){ name id }}`;
       return request(app.getHttpServer())
         .post(gql)
         .send({
-          query: createProductQueryString,
+          query: createNewProductQueryString('bob'),
         })
         .expect(200)
         .expect((res) => {
@@ -63,11 +62,11 @@ describe('AppController (e2e)', () => {
   describe('Find one product by id', () => {
     it('should return one product', async () => {
       let id: string;
-      const createProductQueryString = `mutation{ createProduct(createProductInput:{ name:"bob" }){ name id}}`;
+
       await request(app.getHttpServer())
         .post(gql)
         .send({
-          query: createProductQueryString,
+          query: createNewProductQueryString('bob'),
         })
         .expect(200)
         .expect((res) => {
@@ -90,12 +89,11 @@ describe('AppController (e2e)', () => {
   describe('Update product', () => {
     it('should  update product details', async () => {
       let id: string;
-      const createProductQueryString = `mutation{ createProduct(createProductInput:{ name:"bob" }){ name id}}`;
 
       await request(app.getHttpServer())
         .post(gql)
         .send({
-          query: createProductQueryString,
+          query: createNewProductQueryString('bob'),
         })
         .expect(200)
         .expect((res) => {
@@ -134,14 +132,12 @@ describe('AppController (e2e)', () => {
           query: removeProductQueryString(id),
         });
       expect(response.statusCode).toBe(200);
-
-      function createNewProductQueryString(name: string) {
-        return `mutation{	createProduct(createProductInput:{ name:"${name}"}){  name id }}`;
-      }
     });
   });
 });
-
+function createNewProductQueryString(name: string) {
+  return `mutation{	createProduct(createProductInput:{ name:"${name}"}){  name id }}`;
+}
 function removeProductQueryString(id: string) {
   return `mutation{
   removeProduct(id:"${id}"){
